@@ -1,4 +1,4 @@
-package observability
+package gotel
 
 import (
 	"testing"

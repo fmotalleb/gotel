@@ -32,7 +32,7 @@ There is no Makefile or task runner. Commands are run directly.
 
 ## Architecture
 
-Single flat Go package — `package observability`. No sub-packages.
+Single flat Go package — `package gotel`. No sub-packages.
 
 Key files:
 - `config.go` — `Config`, `TracingConfig`, `MetricsConfig`, `LogsConfig` types, `ParseConfig()` for JSON
