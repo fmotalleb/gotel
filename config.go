@@ -3,9 +3,9 @@ package gotel
 import (
 	"encoding/json"
 	"fmt"
-	"os"
-	"strconv"
 	"time"
+
+	"github.com/fmotalleb/go-tools/defaulter"
 )
 
 type TracingConfig struct {
@@ -55,43 +55,7 @@ func (c *Config) ApplyDefaults() {
 	if c.Logs == nil {
 		c.Logs = &LogsConfig{}
 	}
-	c.Tracing.applyDefaults()
-	c.Metrics.applyDefaults()
-	c.Logs.applyDefaults()
-}
-
-func (t *TracingConfig) applyDefaults() {
-	if !t.Insecure {
-		if v := os.Getenv("GOTEL_TRACING_INSECURE"); v != "" {
-			t.Insecure, _ = strconv.ParseBool(v)
-		}
-	}
-}
-
-func (m *MetricsConfig) applyDefaults() {
-	if !m.Insecure {
-		if v := os.Getenv("GOTEL_METRICS_INSECURE"); v != "" {
-			m.Insecure, _ = strconv.ParseBool(v)
-		}
-	}
-	if m.Interval == 0 {
-		if v := os.Getenv("GOTEL_METRICS_INTERVAL"); v != "" {
-			if d, err := time.ParseDuration(v); err == nil {
-				m.Interval = d
-			}
-		}
-		if m.Interval == 0 {
-			m.Interval = 60 * time.Second
-		}
-	}
-}
-
-func (l *LogsConfig) applyDefaults() {
-	if !l.Insecure {
-		if v := os.Getenv("GOTEL_LOGS_INSECURE"); v != "" {
-			l.Insecure, _ = strconv.ParseBool(v)
-		}
-	}
+	_ = defaulter.ApplyDefaults(c, nil)
 }
 
 func (c *Config) hasSignal() bool {
